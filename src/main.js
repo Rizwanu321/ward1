@@ -5,10 +5,10 @@ import gasImg from './assets/gas.jpg'
 // Data
 const candidates = Array.from({ length: 10 }, (_, i) => {
   const id = i + 1;
-  if (id === 1) {
+  if (id === 2) {
     return {
       id,
-      name: 'പി. വി. മുഹമ്മദ്',
+      name: 'ശാക്കിറ ജുനേഷ്',
       symbol: gasImg,
       party: 'Welfare Party',
       symbolName: 'ഗ്യാസ് സിലിണ്ടർ'
@@ -61,7 +61,7 @@ function renderEVM() {
         <span>Ready</span>
         <div id="ready-lamp" class="led-green active"></div>
       </div>
-      <div class="unit-label">Amarambalam Ward 1</div>
+      <div class="unit-label">Amarambalam Ward 2</div>
     </div>
     <div class="candidates-list">
       ${candidates.map(c => `
@@ -262,7 +262,7 @@ function init() {
 
   const evm = renderEVM();
   const vvpat = renderVVPAT();
-  const success = renderSuccess(candidates[0]); // Setup success wrapper
+  const success = renderSuccess(candidates.find(c => c.name) || candidates[0]); // Setup success wrapper
 
   app.appendChild(evm);
   app.appendChild(vvpat);
