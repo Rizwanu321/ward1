@@ -1,25 +1,25 @@
-import './style.css'
-import candidateImg from './assets/candidate.png'
-import gasImg from './assets/gas.jpg'
+import "./style.css";
+import candidateImg from "./assets/candidate.png";
+import gasImg from "./assets/gas.jpg";
 
 // Data
 const candidates = Array.from({ length: 10 }, (_, i) => {
   const id = i + 1;
-  if (id === 2) {
+  if (id === 1) {
     return {
       id,
-      name: 'ശാക്കിറ ജുനേഷ്',
+      name: "പി. വി. മുഹമ്മദ്",
       symbol: gasImg,
-      party: 'Welfare Party',
-      symbolName: 'ഗ്യാസ് സിലിണ്ടർ'
+      party: "Welfare Party",
+      symbolName: "ഗ്യാസ് സിലിണ്ടർ",
     };
   }
   return {
     id,
-    name: '',
-    symbol: '',
-    party: '',
-    symbolName: ''
+    name: "",
+    symbol: "",
+    party: "",
+    symbolName: "",
   };
 });
 
@@ -27,7 +27,7 @@ const candidates = Array.from({ length: 10 }, (_, i) => {
 let hasVoted = false;
 
 // DOM Elements
-const app = document.querySelector('#app');
+const app = document.querySelector("#app");
 
 // Audio Context for Beep
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -36,7 +36,7 @@ function playBeep(duration = 2000) {
   const oscillator = audioCtx.createOscillator();
   const gainNode = audioCtx.createGain();
 
-  oscillator.type = 'square'; // Harsh buzzer like sound
+  oscillator.type = "square"; // Harsh buzzer like sound
   oscillator.frequency.setValueAtTime(2000, audioCtx.currentTime); // High pitch
 
   gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
@@ -53,30 +53,40 @@ function playBeep(duration = 2000) {
 
 // Render EVM View
 function renderEVM() {
-  const evmView = document.createElement('div');
-  evmView.className = 'evm-container';
+  const evmView = document.createElement("div");
+  evmView.className = "evm-container";
   evmView.innerHTML = `
     <div class="evm-header">
       <div class="ready-indicator">
         <span>Ready</span>
         <div id="ready-lamp" class="led-green active"></div>
       </div>
-      <div class="unit-label">Amarambalam Ward 2</div>
+      <div class="unit-label">Amarambalam Ward 1</div>
     </div>
     <div class="candidates-list">
-      ${candidates.map(c => `
+      ${candidates
+        .map(
+          (c) => `
         <div class="candidate-row">
           <div class="col-serial">${c.id}</div>
           <div class="col-name-symbol">
             <span class="candidate-name">${c.name}</span>
-            ${c.symbol ? `<img src="${c.symbol}" class="candidate-symbol" alt="symbol" />` : ''}
+            ${
+              c.symbol
+                ? `<img src="${c.symbol}" class="candidate-symbol" alt="symbol" />`
+                : ""
+            }
           </div>
           <div class="col-action">
             <div id="led-${c.id}" class="led-red"></div>
-            <button class="btn-vote" data-id="${c.id}" aria-label="Vote for candidate ${c.id}"></button>
+            <button class="btn-vote" data-id="${
+              c.id
+            }" aria-label="Vote for candidate ${c.id}"></button>
           </div>
         </div>
-      `).join('')}
+      `
+        )
+        .join("")}
     </div>
     <div class="evm-footer">
        Educational Purpose Only
@@ -87,13 +97,18 @@ function renderEVM() {
 
 // Render VVPAT Overlay (Exact Replica Design)
 function renderVVPAT(candidate) {
-  const overlay = document.getElementById('vvpat-overlay') || document.createElement('div');
-  overlay.className = 'vvpat-overlay';
-  overlay.id = 'vvpat-overlay';
+  const overlay =
+    document.getElementById("vvpat-overlay") || document.createElement("div");
+  overlay.className = "vvpat-overlay";
+  overlay.id = "vvpat-overlay";
 
-  const serial = candidate ? (candidate.id < 10 ? `0${candidate.id}` : candidate.id) : '00';
-  const name = candidate ? candidate.name : 'NAME';
-  const symbol = candidate ? candidate.symbol : '';
+  const serial = candidate
+    ? candidate.id < 10
+      ? `0${candidate.id}`
+      : candidate.id
+    : "00";
+  const name = candidate ? candidate.name : "NAME";
+  const symbol = candidate ? candidate.symbol : "";
 
   overlay.innerHTML = `
     <div class="vvpat-real-machine">
@@ -110,7 +125,11 @@ function renderVVPAT(candidate) {
                 <div class="vvpat-internal-light"></div>
                 <!-- Paper Slip -->
                 <div id="vvpat-slip" class="vvpat-paper-slip">
-                  ${symbol ? `<img src="${symbol}" class="slip-symbol" alt="s">` : ''}
+                  ${
+                    symbol
+                      ? `<img src="${symbol}" class="slip-symbol" alt="s">`
+                      : ""
+                  }
                 </div>
              </div>
           </div>
@@ -136,9 +155,9 @@ function renderVVPAT(candidate) {
 
 // Render Success View (Grand Victory Theme)
 function renderSuccess(candidate) {
-  const view = document.createElement('div');
-  view.className = 'success-container hidden';
-  view.id = 'success-view';
+  const view = document.createElement("div");
+  view.className = "success-container hidden";
+  view.id = "success-view";
 
   // SVG Icons
   const checkIcon = `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
@@ -201,16 +220,16 @@ function renderSuccess(candidate) {
 
 // Simple Canvas Confetti Implementation
 function triggerConfetti() {
-  const canvas = document.getElementById('confetti-canvas');
+  const canvas = document.getElementById("confetti-canvas");
   if (!canvas) return;
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
   const particles = [];
   const particleCount = 150;
-  const colors = ['#10b981', '#f59e0b', '#3b82f6', '#ef4444', '#8b5cf6'];
+  const colors = ["#10b981", "#f59e0b", "#3b82f6", "#ef4444", "#8b5cf6"];
 
   for (let i = 0; i < particleCount; i++) {
     particles.push({
@@ -221,7 +240,7 @@ function triggerConfetti() {
       size: Math.random() * 8 + 4,
       color: colors[Math.floor(Math.random() * colors.length)],
       life: 100,
-      gravity: 0.2
+      gravity: 0.2,
     });
   }
 
@@ -229,7 +248,7 @@ function triggerConfetti() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     let activeParticles = false;
 
-    particles.forEach(p => {
+    particles.forEach((p) => {
       if (p.life > 0) {
         activeParticles = true;
         p.x += p.vx;
@@ -258,25 +277,25 @@ function triggerConfetti() {
 
 // Initialize
 function init() {
-  app.innerHTML = '';
+  app.innerHTML = "";
 
   const evm = renderEVM();
   const vvpat = renderVVPAT();
-  const success = renderSuccess(candidates.find(c => c.name) || candidates[0]); // Setup success wrapper
+  const success = renderSuccess(candidates[0]); // Setup success wrapper
 
   app.appendChild(evm);
   app.appendChild(vvpat);
   app.appendChild(success);
 
   // Event Listeners
-  const voteBtns = document.querySelectorAll('.btn-vote');
+  const voteBtns = document.querySelectorAll(".btn-vote");
 
-  voteBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
+  voteBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
       if (hasVoted) return;
 
       const id = parseInt(e.target.dataset.id);
-      const candidate = candidates.find(c => c.id === id);
+      const candidate = candidates.find((c) => c.id === id);
 
       // If candidate has no name (is blank/invalid), do nothing
       if (!candidate || !candidate.name) return;
@@ -285,45 +304,45 @@ function init() {
     });
   });
 
-  document.getElementById('reset-btn').addEventListener('click', resetEVM);
+  document.getElementById("reset-btn").addEventListener("click", resetEVM);
 }
 
 function handleVote(id) {
   hasVoted = true;
 
   // 1. Resume Audio Context
-  if (audioCtx.state === 'suspended') {
+  if (audioCtx.state === "suspended") {
     audioCtx.resume();
   }
 
   // 2. Visual Feedback on EVM
   const redLed = document.getElementById(`led-${id}`);
-  const readyLamp = document.getElementById('ready-lamp');
+  const readyLamp = document.getElementById("ready-lamp");
 
-  if (redLed) redLed.classList.add('active');
-  if (readyLamp) readyLamp.classList.remove('active'); // Ready light off
+  if (redLed) redLed.classList.add("active");
+  if (readyLamp) readyLamp.classList.remove("active"); // Ready light off
 
   // 3. Audio Feedback
   playBeep(2000); // 2 second beep
 
   // 4. Trigger VVPAT Animation
-  const candidate = candidates.find(c => c.id === id) || candidates[0];
+  const candidate = candidates.find((c) => c.id === id) || candidates[0];
 
   // Re-render VVPAT with specific candidate details to update the slip
   const overlay = renderVVPAT(candidate);
   // Ensure overlay exists in DOM
-  if (!document.getElementById('vvpat-overlay')) app.appendChild(overlay);
+  if (!document.getElementById("vvpat-overlay")) app.appendChild(overlay);
 
   // Show VVPAT Overlay
-  const vvpatOverlay = document.getElementById('vvpat-overlay');
-  vvpatOverlay.classList.add('visible');
+  const vvpatOverlay = document.getElementById("vvpat-overlay");
+  vvpatOverlay.classList.add("visible");
 
   // Start Animation
-  const slip = document.getElementById('vvpat-slip');
+  const slip = document.getElementById("vvpat-slip");
   if (slip) {
-    slip.classList.remove('animate-vote');
+    slip.classList.remove("animate-vote");
     void slip.offsetWidth; // Trigger reflow
-    slip.classList.add('animate-vote');
+    slip.classList.add("animate-vote");
   }
 
   // 5. Play Cut Sound when slip drops (approx 3s into animation)
@@ -334,7 +353,7 @@ function handleVote(id) {
   // 6. Navigate to Success Page after VVPAT animation (approx 4s)
   setTimeout(() => {
     // Hide VVPAT
-    vvpatOverlay.classList.remove('visible');
+    vvpatOverlay.classList.remove("visible");
 
     // Show Success
     showSuccess(candidate);
@@ -347,7 +366,7 @@ function playCutSound() {
   // 1. Mechanical "Cluster" / Solenoid Thud
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
-  osc.type = 'square';
+  osc.type = "square";
   osc.frequency.setValueAtTime(80, t);
   osc.frequency.exponentialRampToValueAtTime(10, t + 0.1);
   gain.gain.setValueAtTime(0.8, t);
@@ -375,24 +394,24 @@ function playCutSound() {
 }
 
 function showSuccess(candidate) {
-  const evmView = document.querySelector('.evm-container');
+  const evmView = document.querySelector(".evm-container");
 
   // Remove old success view if any
-  const oldView = document.getElementById('success-view');
+  const oldView = document.getElementById("success-view");
   if (oldView) oldView.remove();
 
   // Create new one
   const newSuccessView = renderSuccess(candidate);
-  newSuccessView.classList.remove('hidden'); // Make it visible immediately
+  newSuccessView.classList.remove("hidden"); // Make it visible immediately
   app.appendChild(newSuccessView);
 
   // Re-attach listener
-  const resetBtn = document.getElementById('reset-btn');
+  const resetBtn = document.getElementById("reset-btn");
   if (resetBtn) {
-    resetBtn.addEventListener('click', resetEVM);
+    resetBtn.addEventListener("click", resetEVM);
   }
 
-  evmView.style.display = 'none';
+  evmView.style.display = "none";
 
   // Trigger Celebration
   triggerConfetti();
@@ -402,18 +421,20 @@ function resetEVM() {
   hasVoted = false;
 
   // Reset EVM UI
-  document.querySelectorAll('.led-red').forEach(el => el.classList.remove('active'));
-  document.getElementById('ready-lamp').classList.add('active');
+  document
+    .querySelectorAll(".led-red")
+    .forEach((el) => el.classList.remove("active"));
+  document.getElementById("ready-lamp").classList.add("active");
 
   // Reset VVPAT
-  document.getElementById('vvpat-overlay').classList.remove('visible');
-  document.getElementById('vvpat-slip').classList.remove('animate-vote');
+  document.getElementById("vvpat-overlay").classList.remove("visible");
+  document.getElementById("vvpat-slip").classList.remove("animate-vote");
 
   // Show EVM
-  document.querySelector('.evm-container').style.display = 'flex';
+  document.querySelector(".evm-container").style.display = "flex";
 
   // Remove Success View
-  const successView = document.getElementById('success-view');
+  const successView = document.getElementById("success-view");
   if (successView) successView.remove();
 }
 
